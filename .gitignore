@@ -1,0 +1,13 @@
+# Code
+.cache/
+/vendor
+.env
+.env.backup
+.env.production
+devops/db/volumes/data/
+devops/db/volumes/config/
+devops/backend/volumes/
+
+# IDEs
+/.idea
+/.vscode

@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: cd-db
+    hostname: cd-db
+    user: "1000:1000"
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: cdmon
+      TZ: Europe/Madrid
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "29350:3306"
+    volumes:
+      - cd-db-volume-data:/var/lib/mysql
+      - cd-db-volume-config:/etc/mysql/conf.d
+      - cd-db-volume-init:/docker-entrypoint-initdb.d
+    networks:
+      - cd-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cd-db-volume-data:
+    external: true
+  cd-db-volume-config:
+    external: true
+  cd-db-volume-init:
+    external: true
+
+networks:
+  cd-network:
+    external: true

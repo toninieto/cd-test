@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS cdtest
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'cdtest_user'@'%' IDENTIFIED BY 'cdmon';
+
+GRANT ALL PRIVILEGES ON cdtest.* TO 'cdtest_user'@'%';
+FLUSH PRIVILEGES;

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+### CREATE ENVIRONMENT
+## GENERAL
+# Network
+docker network create -d bridge cd-network
+
+## DB
+# Volumes
+mkdir -p ./db/volumes/data
+mkdir -p ./db/volumes/config
+
+docker volume create \
+ --name cd-db-volume-data \
+ --opt type=none \
+ --opt device=$(pwd)/db/volumes/data \
+ --opt o=bind
+
+docker volume create \
+ --name cd-db-volume-config \
+ --opt type=none \
+ --opt device=$(pwd)/db/volumes/config \
+ --opt o=bind
+
+docker volume create \
+ --name cd-db-volume-init \
+ --opt type=none \
+ --opt device=$(pwd)/db/volumes/init \
+ --opt o=bind
+
+# Init container
+docker compose -f ./db/docker-compose.yml up -d
+
+## BACKEND
+# Volumes
+docker volume create \
+ --name cd-backend-volume-code \
+ --opt type=none \
+ --opt device=$(pwd)/../backend \
+ --opt o=bind
+
+# Init container
+docker compose -f ./backend/docker-compose.yml up -d
+
+docker logs -f cd-backend
+

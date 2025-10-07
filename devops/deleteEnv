@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+### DELETE ENVIRONMENT
+## DB
+# Containers
+docker stop cd-db
+docker rm cd-db
+
+# Volumes
+docker volume rm cd-db-volume-data
+DB_DATA_FOLDER="./db/volumes/data"
+if [ -d "$DB_DATA_FOLDER" ]; then
+  docker run --rm -v $(pwd)/db/volumes/data:/data alpine sh -c "rm -rf /data/* /data/.* 2>/dev/null || true"
+  rm -rf "$DB_DATA_FOLDER"
+fi
+
+docker volume rm cd-db-volume-config
+DB_CONFIG_FOLDER="./db/volumes/config"
+if [ -d "$DB_CONFIG_FOLDER" ]; then
+  docker run --rm -v $(pwd)/db/volumes/config:/data alpine sh -c "rm -rf /data/* /data/.* 2>/dev/null || true"
+  rm -rf "$DB_CONFIG_FOLDER"
+fi
+
+docker volume rm cd-db-volume-init
+
+
+## BACKEND
+# Containers
+docker stop cd-backend
+docker rm cd-backend
+
+# Volumes
+docker volume rm cd-backend-volume-code
+
+
+## GENERAL
+# Network
+docker network rm cd-network

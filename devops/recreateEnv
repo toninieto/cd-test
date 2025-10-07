@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+chmod +x recreateEnv
+chmod +x deleteEnv
+chmod +x createEnv
+
+./deleteEnv
+./createEnv
